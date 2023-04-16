@@ -47,7 +47,7 @@ class UserController extends Controller
             ], 'Login Success');
 
         } catch (Exception $error) {
-            return ResponseFormatter::error('Authentication Failed', 401);
+            return ResponseFormatter::error($error->getMessage(), 401);
         }
     }
 
