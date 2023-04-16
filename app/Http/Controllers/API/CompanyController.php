@@ -21,7 +21,9 @@ class CompanyController extends Controller
         $limit = $request->input('limit', 10);
 
         if ($id) {
-            $company = Company::with(['users'])->find($id);
+            $company = Company::whereHas('users', function ($query) {
+                $query->where('user_id', Auth::user()->id);
+            })->with(['users'])->find($id);
 
             if ($company) {
                 return ResponseFormatter::success(
@@ -36,7 +38,7 @@ class CompanyController extends Controller
             );
         }
 
-        $companies = Company::whereHas('users', function ($query) {
+        $companies = Company::with(['users'])->whereHas('users', function ($query) {
             $query->where('user_id', Auth::user()->id);
         });
 
