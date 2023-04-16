@@ -15,14 +15,21 @@ use App\Http\Controllers\API\UserController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
 // Company API
-Route::get('companies', [CompanyController::class, 'all']);
-Route::post('companies', [CompanyController::class, 'create'])->middleware('auth:sanctum');
-Route::put('companies', [CompanyController::class, 'update'])->middleware('auth:sanctum');
+Route::prefix('companies')->middleware('auth:sanctum')->name('companies.')->group(function () {
+    Route::get('/', [CompanyController::class, 'fetch'])->name('fetch');
+    Route::post('/', [CompanyController::class, 'create'])->name('create');
+    Route::post('update/{id}', [CompanyController::class, 'update'])->name('update');
+    //Route::delete('/', [CompanyController::class, 'delete'])->name('delete');
+});
 
 //Auth API
-Route::post('login', [UserController::class, 'login']);
-Route::post('register', [UserController::class, 'register']);
-Route::post('logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
-//Ambil Data User
-Route::get('user', [UserController::class, 'fetch'])->middleware('auth:sanctum');
+Route::name('auth.')->group(function () {
+    Route::post('login', [UserController::class, 'login'])->name('login');
+    Route::post('register', [UserController::class, 'register'])->name('register');
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('logout', [UserController::class, 'logout'])->name('logout');
+        Route::get('user', [UserController::class, 'fetch'])->name('fetch');
+    });
+});

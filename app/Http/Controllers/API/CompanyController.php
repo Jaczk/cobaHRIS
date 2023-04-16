@@ -14,7 +14,7 @@ use App\Http\Requests\UpdateCompanyRequest;
 
 class CompanyController extends Controller
 {
-    public function all(Request $request)
+    public function fetch(Request $request)
     {
         $id = $request->input('id');
         $name = $request->input('name');
@@ -36,7 +36,9 @@ class CompanyController extends Controller
             );
         }
 
-        $companies = Company::with(['users']);
+        $companies = Company::whereHas('users', function ($query) {
+            $query->where('user_id', Auth::user()->id);
+        });
 
         if ($name) {
             $companies->where('name', 'like', '%' . $name . '%');
@@ -82,12 +84,12 @@ class CompanyController extends Controller
         }
     }
     
-    public function update(UpdateCompanyRequest $request,$id)
+    public function update(UpdateCompanyRequest $request, $id)
     {
         try {
             $company = Company::find($id);
 
-            if(!$company){
+            if (!$company){
                 throw new Exception('Data perusahaan tidak ada');
             }
 
