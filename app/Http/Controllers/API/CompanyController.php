@@ -20,10 +20,12 @@ class CompanyController extends Controller
         $name = $request->input('name');
         $limit = $request->input('limit', 10);
 
+        $companyQuery = Company::with(['users'])->whereHas('users', function ($query) {
+            $query->where('user_id', Auth::user()->id);
+        });
+        //Get Single Company
         if ($id) {
-            $company = Company::whereHas('users', function ($query) {
-                $query->where('user_id', Auth::user()->id);
-            })->with(['users'])->find($id);
+            $company = $companyQuery->find($id);
 
             if ($company) {
                 return ResponseFormatter::success(
@@ -38,9 +40,8 @@ class CompanyController extends Controller
             );
         }
 
-        $companies = Company::with(['users'])->whereHas('users', function ($query) {
-            $query->where('user_id', Auth::user()->id);
-        });
+        //Get List Company
+        $companies = $companyQuery;
 
         if ($name) {
             $companies->where('name', 'like', '%' . $name . '%');
