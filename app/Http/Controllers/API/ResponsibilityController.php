@@ -41,6 +41,7 @@ class ResponsibilityController extends Controller
         $id = $request->input('id');
         $name = $request->input('name');
         $limit = $request->input('limit', 10);
+        $role_id = $request->input('role_id');
 
         $responsibilityQuery = responsibility::query();
         //Get Single responsibility
@@ -61,10 +62,14 @@ class ResponsibilityController extends Controller
         }
 
         //Get List responsibility
-        $responsibilities = $responsibilityQuery->where('roles_id', $request->roles_id);
+        $responsibilities = $responsibilityQuery;
 
         if ($name) {
             $responsibilities->where('name', 'like', '%' . $name . '%');
+        }
+
+        if ($role_id) {
+            $responsibilities->where('role_id', $role_id);
         }
 
         return ResponseFormatter::success(
