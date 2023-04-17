@@ -19,7 +19,7 @@ class ResponsibilityController extends Controller
             //Create responsibility
             $responsibility = Responsibility::create([
                 'name' => $request->name,
-                'roles_id' => $request->roles_id,
+                'role_id' => $request->roles_id,
             ]);
             if (!$responsibility) {
                 throw new Exception('Data responsibility gagal ditambahkan');

@@ -16,7 +16,7 @@ class Responsibility extends Model
      */
     protected $fillable = [
         'name',
-        'roles_id',
+        'role_id',
     ];
 
     public function role()
