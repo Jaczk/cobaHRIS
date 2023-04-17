@@ -104,7 +104,7 @@ class CompanyController extends Controller
             //Update Company
             $company->update([
                 'name' => $request->name,
-                'logo' => $path,
+                'logo' => isset($path) ? $path : $company->logo ?? null,
             ]);
 
             //Load User and Company
