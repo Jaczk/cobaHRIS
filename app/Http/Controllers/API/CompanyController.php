@@ -58,7 +58,7 @@ class CompanyController extends Controller
         try {
             //Upload Logo
             if ($request->file('logo')) {
-                $path = $request->file('logo')->store('company_logo', 'public');
+                $path = $request->file('logo')->store('public/logos');
             }
             //Create Company
             $company = Company::create([
@@ -98,7 +98,7 @@ class CompanyController extends Controller
 
             //Upload Logo
             if ($request->file('logo')) {
-                $path = $request->file('logo')->store('public/company_logo');
+                $path = $request->file('logo')->store('public/logos');
             }
 
             //Update Company
