@@ -25,6 +25,6 @@ class Team extends Model
     }
     public function employees()
     {
-        return $this->hasMany(User::class);
+        return $this->hasMany(Employee::class);
     }
 }
